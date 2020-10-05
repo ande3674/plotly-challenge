@@ -69,6 +69,20 @@ function drawBubbleChart(id) {
 
 function fillDemographicData(id) {
     console.log(`fillDemographicData() called with: ${id}`);
+
+    d3.json("samples.json").then((data) => {
+
+        var metaData = data.metadata;
+        var filteredDataArray = metaData.filter((d) => d.id = id);
+        result = filteredDataArray[0];
+
+        var metaDataArea = d3.select('#sample-metadata');
+        metaDataArea.html("");
+
+        Object.entries(result).forEach(([key, value]) => {
+            metaDataArea.append("h6").text(`${key}: ${value}`);
+        });
+    });
 }
 
 function  optionChanged(newId) {
