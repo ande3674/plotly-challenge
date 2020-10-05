@@ -34,4 +34,10 @@ function drawBubbleChart(id) {
     console.log(`drawBubbleChart() called with: ${id}`);
 }
 
+function  optionChanged(newId) {
+    console.log(`optionChanged(${newId})`);
+    drawBarGraph(newId);
+    drawBubbleChart(newId);
+}
+
 initDashboard()
