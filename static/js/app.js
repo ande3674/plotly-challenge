@@ -1,4 +1,5 @@
-//Some code borrowed from Dom's office hours :-)
+// Some of the code in this assignment was borrowed from Dom's office hours :-)
+
 console.log("You are in the app.js file");
 
 function initDashboard() {
@@ -31,13 +32,12 @@ function drawBarGraph(id) {
     console.log(`drawBarGraph() called with: ${id}`);
 
     d3.json("samples.json").then((data) => {
-        // get samples for this id
+        // get samples data
         var samples = data.samples;
         // filter on requested id
         var filterSamplesArray = samples.filter((s) => s.id == id);
         // only one match for each ID so grab index 0:
         var result = filterSamplesArray[0];
-        //console.log(result)
 
         // get the stuff for this id
         var otu_ids = result.otu_ids;
@@ -80,6 +80,9 @@ function drawBubbleChart(id) {
         var otu_labels = result.otu_labels;
         var sample_values = result.sample_values;
 
+        // set a max bubble size for bubble scaling
+        var maxSize = 60;
+
         var bubbleData = {
             x: otu_ids,
             y: sample_values,
@@ -87,12 +90,19 @@ function drawBubbleChart(id) {
             text: otu_labels,
             marker: {
                 size: sample_values,
-                color: otu_ids
+                color: otu_ids,
+                sizeref: 2.0 * Math.max(...sample_values) / (maxSize**2),
+                sizemode: 'area'
             }
         }
 
         var barLayout = {
             title: "Samples",
+            xaxis: { 
+                title: { 
+                    text: "OTU id"
+                }
+            },
             margin: {t: 30, l: 150}
         }
 
@@ -107,7 +117,6 @@ function fillDemographicData(id) {
 
         var metaData = data.metadata;
         var filteredDataArray = metaData.filter((d) => d.id == id);
-        //console.log(filteredDataArray);
         result = filteredDataArray[0];
 
         var metaDataArea = d3.select('#sample-metadata');
