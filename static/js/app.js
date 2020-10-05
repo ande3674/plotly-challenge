@@ -37,7 +37,7 @@ function drawBarGraph(id) {
         var filterSamplesArray = samples.filter((s) => s.id == id);
         // only one match for each ID so grab index 0:
         var result = filterSamplesArray[0];
-        console.log(result)
+        //console.log(result)
 
         // get the stuff for this id
         var otu_ids = result.otu_ids;
@@ -65,6 +65,39 @@ function drawBarGraph(id) {
 
 function drawBubbleChart(id) {
     console.log(`drawBubbleChart() called with: ${id}`);
+
+    d3.json("samples.json").then((data) => {
+        // get samples for this id
+        var samples = data.samples;
+        // filter on requested id
+        var filterSamplesArray = samples.filter((s) => s.id == id);
+        // only one match for each ID so grab index 0:
+        var result = filterSamplesArray[0];
+        //console.log(result)
+
+        // get the stuff for this id
+        var otu_ids = result.otu_ids;
+        var otu_labels = result.otu_labels;
+        var sample_values = result.sample_values;
+
+        var bubbleData = {
+            x: otu_ids,
+            y: sample_values,
+            mode: "markers",
+            text: otu_labels,
+            marker: {
+                size: sample_values,
+                color: otu_ids
+            }
+        }
+
+        var barLayout = {
+            title: "Samples",
+            margin: {t: 30, l: 150}
+        }
+
+        Plotly.newPlot("bubble", [bubbleData], barLayout);
+    });
 }
 
 function fillDemographicData(id) {
@@ -73,7 +106,8 @@ function fillDemographicData(id) {
     d3.json("samples.json").then((data) => {
 
         var metaData = data.metadata;
-        var filteredDataArray = metaData.filter((d) => d.id = id);
+        var filteredDataArray = metaData.filter((d) => d.id == id);
+        //console.log(filteredDataArray);
         result = filteredDataArray[0];
 
         var metaDataArea = d3.select('#sample-metadata');
