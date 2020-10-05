@@ -119,7 +119,7 @@ function fillDemographicData(id) {
     });
 }
 
-function  optionChanged(newId) {
+function optionChanged(newId) {
     console.log(`optionChanged(${newId})`);
     drawBarGraph(newId);
     drawBubbleChart(newId);
